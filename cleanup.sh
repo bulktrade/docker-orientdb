@@ -8,6 +8,11 @@ if [ -d /orientdb/databases/GratefulDeadConcerts ]; then
 	while [ $? -ne 0 ]; do
 	    /orientdb/bin/console.sh drop database remote:$ORIENTDB_PORT_2424_TCP_ADDR/GratefulDeadConcerts $ORIENTDB_ROOT_USER $ORIENTDB_ROOT_USER_PASSWORD plocal
 	done
+else
+	/orientdb/bin/console.sh connect remote:$ORIENTDB_PORT_2424_TCP_ADDR/bulktrade $ORIENTDB_ROOT_USER $ORIENTDB_ROOT_USER_PASSWORD
+	while [ $? -ne 0 ]; do
+		/orientdb/bin/console.sh connect remote:$ORIENTDB_PORT_2424_TCP_ADDR/bulktrade $ORIENTDB_ROOT_USER $ORIENTDB_ROOT_USER_PASSWORD
+	done
 fi
 
 # Remove default reader and writer user
