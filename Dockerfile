@@ -1,20 +1,21 @@
-FROM java:8
-RUN apt-get update && apt-get upgrade -y && apt-get install -y wget
+FROM java:8-jdk
+
+MAINTAINER Bulktrade GmbH (info@bulktrade.org)
 
 WORKDIR /
 
-RUN wget "http://orientdb.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.1.0.tar.gz&os=linux" -O orientdb-community-2.1.0.tar.gz &&\
-    tar -zxvf orientdb-community-2.1.0.tar.gz && \
-    mv orientdb-community-2.1.0 orientdb && \
-    rm -rf orientdb-community-2.1.0.tar.gz && \
-    mkdir -p /orientdb/backup
+RUN mkdir /orientdb && \
+  wget -O orientdb-community-$ORIENTDB_VERSION.tar.gz "http://orientdb.com/download.php?email=unknown@unknown.com&file=orientdb-community-$ORIENTDB_VERSION.tar.gz&os=linux" \
+  && tar -xvzf orientdb-community-$ORIENTDB_VERSION.tar.gz -C /orientdb --strip-components=1\
+  && rm orientdb-community-$ORIENTDB_VERSION.tar.gz \
+  && rm -rf /orientdb/databases/*
 
-RUN rm -rf /var/lib/apt/lists/*
 VOLUME ["/orientdb/backup", "/orientdb/databases", "/orientdb/config"]
 
 EXPOSE 2424 2480
 
 WORKDIR /orientdb
+USER root
 
 ADD run.sh /run.sh
 ADD cleanup.sh /cleanup.sh
