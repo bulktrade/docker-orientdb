@@ -2,7 +2,7 @@ FROM java:8-jdk
 
 MAINTAINER Bulktrade GmbH (info@bulktrade.org)
 
-WORKDIR /
+ENV ORIENTDB_VERSION 2.1.2
 
 RUN mkdir /orientdb && \
   wget -O orientdb-community-$ORIENTDB_VERSION.tar.gz "http://orientdb.com/download.php?email=unknown@unknown.com&file=orientdb-community-$ORIENTDB_VERSION.tar.gz&os=linux" \
